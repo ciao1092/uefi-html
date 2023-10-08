@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<title>HP Pavilion 15-eg0000nl UEFI</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0" />
+		<link rel="stylesheet" href="styles.css" />
+	</head>
+	<script>
+		function onhashchange() {
+			var elmnt = document.getElementsByClassName("main")[0];
+			var file = window.location.hash.substring(1);
+			var selectedelmnt = document.getElementById("selected");
+
+			if (!file) file = "Main";
+
+			var xhttp = new XMLHttpRequest();
+			xhttp.onreadystatechange = function () {
+				if (this.readyState == 4 && this.status == 200) {
+					elmnt.innerHTML = this.responseText;
+					elmnt.removeAttribute("error");
+				} else {
+					elmnt.innerHTML = "An error response was received while loading " + file + ".";
+					elmnt.setAttribute("error", "");
+				}
+			};
+
+			console.log("Loading page " + file + ".html");
+
+			xhttp.open("GET", file + ".html", true);
+			xhttp.send();
+
+			//elmnt.innerHTML = "<iframe src=\"" + file + ".html\" title=\"" + file + "\" seamless />"
+
+			try {
+				selectedelmnt.id = "";
+				document.getElementsByName(file)[0].id = "selected";
+			} catch {}
+		}
+	</script>
+	<body onhashchange="onhashchange()">
+		<div class="container">
+			<div class="header" unselectable>BIOS Setup Utility</div>
+			<div class="menu" unselectable>
+				<a href="#Main" name="Main">Main</a>
+				<a href="#Security" name="Security">Security</a>
+				<a href="#Configuration" name="Configuration">Configuration</a>
+				<a href="#BootOptions" name="BootOptions">Boot Options</a>
+				<a href="#Exit" name="Exit">Exit</a>
+			</div>
+			<div class="main">
+				<script>
+					onhashchange();
+				</script>
+			</div>
+			<div class="left" unselectable><img src="hp-logo.svg" width="70%" alt="HP" class="logo" /></div>
+			<div class="right" not-implemented unselectable>
+				<div center><b>Item Specific Help</b></div>
+				<br />
+				&lt;Enter&gt; selects field.
+			</div>
+		</div>
+	</body>
+</html>
